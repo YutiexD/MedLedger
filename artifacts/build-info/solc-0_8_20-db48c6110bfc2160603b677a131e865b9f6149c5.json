@@ -1,6 +1,6 @@
 {
   "_format": "hh3-sol-build-info-1",
-  "id": "solc-0_8_20-f572f49739d2f81a5988204e34163aa58463768a",
+  "id": "solc-0_8_20-db48c6110bfc2160603b677a131e865b9f6149c5",
   "solcVersion": "0.8.20",
   "solcLongVersion": "0.8.20+commit.a1b79de6",
   "compilerType": "solc",
@@ -46,7 +46,7 @@
         "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.4.0) (utils/introspection/IERC165.sol)\n\npragma solidity >=0.4.16;\n\n/**\n * @dev Interface of the ERC-165 standard, as defined in the\n * https://eips.ethereum.org/EIPS/eip-165[ERC].\n *\n * Implementers can declare support of contract interfaces, which can then be\n * queried by others ({ERC165Checker}).\n *\n * For an implementation, see {ERC165}.\n */\ninterface IERC165 {\n    /**\n     * @dev Returns true if this contract implements the interface defined by\n     * `interfaceId`. See the corresponding\n     * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section]\n     * to learn more about how these ids are created.\n     *\n     * This function call must use less than 30 000 gas.\n     */\n    function supportsInterface(bytes4 interfaceId) external view returns (bool);\n}\n"
       },
       "project/contracts/HospitalMedLedger.sol": {
-        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\nimport \"@openzeppelin/contracts/access/AccessControl.sol\";\n\ncontract HospitalMedLedger is AccessControl {\n    bytes32 public constant DOCTOR_ROLE = keccak256(\"DOCTOR_ROLE\");\n\n    constructor() {\n        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);\n    }\n    \n    // Core skeleton for role-based access control.\n    // Further logical functions for booking and unlocking slots will be added in Phase 4.\n}\n"
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\nimport \"@openzeppelin/contracts/access/AccessControl.sol\";\n\ncontract HospitalMedLedger is AccessControl {\n    bytes32 public constant DOCTOR_ROLE = keccak256(\"DOCTOR_ROLE\");\n\n    mapping(uint256 => address) public bookings;\n\n    event SlotBooked(uint256 indexed slotId, address indexed patient);\n    event SlotCancelled(uint256 indexed slotId, address indexed patient);\n\n    constructor() {\n        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);\n    }\n    \n    function bookSlot(uint256 slotId) public {\n        require(bookings[slotId] == address(0), \"Slot already booked\");\n        bookings[slotId] = msg.sender;\n        emit SlotBooked(slotId, msg.sender);\n    }\n\n    function cancelSlot(uint256 slotId) public {\n        require(bookings[slotId] == msg.sender || hasRole(DEFAULT_ADMIN_ROLE, msg.sender), \"Not authorized to cancel\");\n        address patient = bookings[slotId];\n        bookings[slotId] = address(0);\n        emit SlotCancelled(slotId, patient);\n    }\n}\n"
       }
     }
   }

@@ -6,10 +6,25 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 contract HospitalMedLedger is AccessControl {
     bytes32 public constant DOCTOR_ROLE = keccak256("DOCTOR_ROLE");
 
+    mapping(uint256 => address) public bookings;
+
+    event SlotBooked(uint256 indexed slotId, address indexed patient);
+    event SlotCancelled(uint256 indexed slotId, address indexed patient);
+
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
     
-    // Core skeleton for role-based access control.
-    // Further logical functions for booking and unlocking slots will be added in Phase 4.
+    function bookSlot(uint256 slotId) public {
+        require(bookings[slotId] == address(0), "Slot already booked");
+        bookings[slotId] = msg.sender;
+        emit SlotBooked(slotId, msg.sender);
+    }
+
+    function cancelSlot(uint256 slotId) public {
+        require(bookings[slotId] == msg.sender || hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Not authorized to cancel");
+        address patient = bookings[slotId];
+        bookings[slotId] = address(0);
+        emit SlotCancelled(slotId, patient);
+    }
 }
