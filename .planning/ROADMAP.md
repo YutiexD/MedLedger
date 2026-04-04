@@ -45,3 +45,12 @@ This document outlines the phased execution plan mapping requirements to logical
 - Patient can view/download that prescription.
 - Patient can leave a public rating/review for the Doctor.
 - Public Doctor pages display aggregate ratings and reviews from previous verified patients.
+
+## Phase 6: Admin Management
+**Goal:** Dedicated portal for role management and on-chain doctor verification.
+**Requirements:** `AUTH-04`, `BOOK-07`
+**Success Criteria:**
+- Admin can access a secured `/admin` dashboard.
+- Admin can add new doctors and grant them `DOCTOR_ROLE` on the blockchain.
+- Admin can remove doctors and revoke their on-chain roles.
+- Admin can view a summary of all users and their linked wallets.

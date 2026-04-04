@@ -6,6 +6,7 @@
 - [ ] **AUTH-01**: User can log in with username/password combinations.
 - [ ] **AUTH-02**: User must link their MetaMask wallet to interact with bookings.
 - [ ] **AUTH-03**: Implements `animated-characters-login-page` tracking mouse gestures.
+- [ ] **AUTH-04**: Admin page available for role and user management.
 
 ### Booking & Smart Contract
 - [ ] **BOOK-01**: Admin can assign/revoke Doctor roles using Role-Based Access Control on-chain.
@@ -14,6 +15,7 @@
 - [ ] **BOOK-04**: Patients can book an available slot, locking it universally via the Sepolia ETH ledger.
 - [ ] **BOOK-05**: Patients can cancel appointments, unlocking the slot on-chain.
 - [ ] **BOOK-06**: Etherscan links are generated to publicly prove booked slots preventing overlap.
+- [ ] **BOOK-07**: On-chain granular role assignment for doctors (Grant/Revoke).
 
 ### User Interface & Experience
 - [ ] **UI-01**: Features standard Light/Dark mode toggles across all pages.
