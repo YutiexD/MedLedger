@@ -1,9 +1,9 @@
 import { ethers } from "ethers";
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || "";
-const RPC_URL = process.env.SEPOLIA_RPC_URL || "";
+const RPC_URL = process.env.SEPOLIA_RPC_URL || "http://127.0.0.1:8545";
 
-// Standard AccessControl ABI fragment for checking roles
+
 const ABI = [
   "function hasRole(bytes32 role, address account) public view returns (bool)",
   "function DOCTOR_ROLE() public view returns (bytes32)"

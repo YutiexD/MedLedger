@@ -54,7 +54,9 @@ export async function GET(req: Request) {
 
     try {
         await connectToDatabase();
-        const slots = await Slot.find({ doctorId, status: "AVAILABLE" }).sort({ startTime: 1 });
+        const slots = await Slot.find({ doctorId })
+            .populate("patientId", "username email")
+            .sort({ startTime: 1 });
         return NextResponse.json({ slots }, { status: 200 });
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });

@@ -30,3 +30,32 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const slotId = searchParams.get("slotId");
+
+  try {
+    await connectToDatabase();
+    const prescription = await Prescription.findOne({ slotId })
+      .populate("doctorId", "username email specialization")
+      .populate("patientId", "username email");
+
+    if (!prescription) {
+      return NextResponse.json({ prescription: null }, { status: 200 });
+    }
+
+    return NextResponse.json({
+      prescription: {
+        id: prescription._id,
+        doctor: { name: prescription.doctorId?.username, specialization: prescription.doctorId?.specialization },
+        patient: { name: prescription.patientId?.username },
+        date: prescription.createdAt?.toLocaleDateString?.() || new Date().toLocaleDateString(),
+        medicines: prescription.medicines,
+        notes: prescription.clinicalNotes,
+      }
+    }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

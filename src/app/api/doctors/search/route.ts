@@ -22,9 +22,9 @@ export async function GET(req: Request) {
         doctors.map(async (doctor) => {
             const slots = await Slot.find({ 
                 doctorId: doctor._id, 
-                status: "AVAILABLE",
                 startTime: { $gte: new Date() } // Future slots only
-            }).limit(10); // Show up to 10 upcoming slots in search card
+            }).populate("patientId", "username").limit(20); 
+
             return {
                 ...doctor.toObject(),
                 slots

@@ -4,13 +4,14 @@ import Slot from "@/models/Slot";
 
 export async function POST(req: Request) {
   try {
-    const { slotId } = await req.json();
+    const { slotId, cancelTxHash } = await req.json();
     await connectToDatabase();
 
     const updatedSlot = await Slot.findByIdAndUpdate(
       slotId,
       {
         status: "AVAILABLE",
+        cancelTxHash: cancelTxHash || undefined,
         $unset: { patientId: "", txHash: "" },
       },
       { new: true }
